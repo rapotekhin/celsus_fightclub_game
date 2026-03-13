@@ -74,5 +74,5 @@ export type ServerEvent =
 // === WebSocket события: Клиент → Сервер ===
 export type ClientEvent =
   | { type: 'tap'; side: 'left' | 'right'; x: number; y: number }
-  | { type: 'admin_action'; action: AdminAction; params?: { balance?: number; round?: number } }
+  | { type: 'admin_action'; action: AdminAction; params?: { balance?: number } }
   | { type: 'place_bet'; side: 'left' | 'right'; amount: number };

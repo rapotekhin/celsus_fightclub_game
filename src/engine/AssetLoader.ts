@@ -172,5 +172,8 @@ export function commonAssetManifest(): AssetManifestEntry[] {
     // Effects
     { key: 'hit_effect', type: 'animation', path: 'sprites/effects/hit_effect', fps: 12, loop: false },
     { key: 'money_effect', type: 'animation', path: 'sprites/effects/money_effect', fps: 12, loop: false },
+
+    // QR Code
+    { key: 'qr_code', type: 'image', path: '/qr-code.gif' },
   ];
 }

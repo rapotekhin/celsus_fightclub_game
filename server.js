@@ -257,9 +257,6 @@ function handleAdminAction(action, params) {
       if (params?.balance !== undefined) {
         gameState.balance = params.balance;
       }
-      if (params?.round !== undefined) {
-        gameState.round = params.round;
-      }
       break;
     }
 
@@ -385,6 +382,10 @@ const assetsPath = path.join(__dirname, 'assets');
 app.use('/sprites', express.static(path.join(assetsPath, 'sprites')));
 app.use('/audio', express.static(path.join(assetsPath, 'audio')));
 app.use('/fonts', express.static(path.join(assetsPath, 'fonts')));
+// Serve root-level static files (like qr-code.gif) - only specific files
+app.get('/qr-code.gif', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'qr-code.gif'));
+});
 
 // JSON body parser for config API
 app.use(express.json());
