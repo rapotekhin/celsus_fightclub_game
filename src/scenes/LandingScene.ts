@@ -65,16 +65,18 @@ export class LandingScene implements IScene {
       
       if (this.showSettings) {
         // Handle settings panel clicks
+        // Check buttons first (they are outside panel)
         if (this.isApplyButtonHitbox(x, y)) {
           this.applySettings();
         } else if (this.isCancelButtonHitbox(x, y)) {
           this.showSettings = false;
           this.activeInput = null;
         } else if (this.isBalanceInputHitbox(x, y)) {
+          // Click on balance input field - activate it
           this.activeInput = 'balance';
         } else if (this.isSettingsPanelHitbox(x, y)) {
-          // Click inside panel - do nothing (keep it open)
-          return;
+          // Click inside panel but not on input - deactivate input
+          this.activeInput = null;
         } else {
           // Click outside - close panel
           this.showSettings = false;
@@ -84,10 +86,11 @@ export class LandingScene implements IScene {
         // Normal mode
         if (this.isSettingsButtonHitbox(x, y)) {
           this.showSettings = true;
-          // Update inputs from current state when opening
+          // Update inputs from current state when opening and auto-activate balance field
           if (this.currentState) {
             this.balanceInput = this.currentState.balance.toString();
           }
+          this.activeInput = 'balance'; // Auto-activate balance field when opening
         } else if (this.isDoorHitbox(x, y)) {
           this.startOpening();
         }
@@ -109,10 +112,11 @@ export class LandingScene implements IScene {
       } else {
         if (this.isSettingsButtonHitbox(x, y)) {
           this.showSettings = true;
-          // Update inputs from current state when opening
+          // Update inputs from current state when opening and auto-activate balance field
           if (this.currentState) {
             this.balanceInput = this.currentState.balance.toString();
           }
+          this.activeInput = 'balance'; // Auto-activate balance field when opening
         } else if (this.isDoorHitbox(x, y)) {
           this.startOpening();
         }
@@ -137,8 +141,9 @@ export class LandingScene implements IScene {
         return;
       }
       
-      // Handle input field selection
-      if (e.key === '1' && e.ctrlKey) {
+      // Handle input field selection (use Alt+B for balance)
+      if (e.key === 'b' && e.altKey) {
+        e.preventDefault();
         this.activeInput = 'balance';
         return;
       }
@@ -230,6 +235,16 @@ export class LandingScene implements IScene {
     const btnW = 150;
     const btnH = 50;
     return x >= btnX && x <= btnX + btnW && y >= btnY && y <= btnY + btnH;
+  }
+  
+  private isBalanceInputHitbox(x: number, y: number): boolean {
+    const panelX = DESIGN_W * 0.3;
+    const panelY = DESIGN_H * 0.3;
+    const inputX = panelX + 200;
+    const inputY = panelY + 120 - 25; // inputY1 - 25 (from render)
+    const inputW = 200;
+    const inputH = 40;
+    return x >= inputX && x <= inputX + inputW && y >= inputY && y <= inputY + inputH;
   }
 
   private startOpening(): void {
@@ -344,7 +359,7 @@ export class LandingScene implements IScene {
       }
       
       // Hint text (inside panel, above buttons area)
-      drawText('Кликните на поле или Ctrl+1 для выбора', panelX + panelW / 2, panelY + panelH - 80, {
+      drawText('Кликните на поле или Alt+B для выбора', panelX + panelW / 2, panelY + panelH - 80, {
         font: '12px PressStart2P',
         color: '#AAA',
         stroke: true,
