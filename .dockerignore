@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+*.md
+python
+assets
+*.mp4
+*.webm
+*.jpg
+*.png
+*.wav
+*.mp3
+*.ttf

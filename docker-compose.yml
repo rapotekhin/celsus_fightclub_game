@@ -1,0 +1,16 @@
+services:
+  game:
+    build: .
+    ports:
+      - "9932:9932"
+    volumes:
+      # Mount assets from host so they're served without rebuilding
+      - ./assets:/app/assets:ro
+      # Dev mode: mount source for live reload (uncomment for dev)
+      # - ./src:/app/src
+      # - ./server.js:/app/server.js
+      # - ./index.html:/app/index.html
+    environment:
+      - PORT=9932
+      - NODE_ENV=production
+    restart: unless-stopped
