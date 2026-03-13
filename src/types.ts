@@ -61,7 +61,8 @@ export type AdminAction =
   | 'start_prefight'
   | 'start_fight'
   | 'next_round'
-  | 'close_win_screen';
+  | 'close_win_screen'
+  | 'set_game_params';
 
 // === WebSocket события: Сервер → Клиент ===
 export type ServerEvent =
@@ -73,5 +74,5 @@ export type ServerEvent =
 // === WebSocket события: Клиент → Сервер ===
 export type ClientEvent =
   | { type: 'tap'; side: 'left' | 'right'; x: number; y: number }
-  | { type: 'admin_action'; action: AdminAction }
+  | { type: 'admin_action'; action: AdminAction; params?: { balance?: number; round?: number } }
   | { type: 'place_bet'; side: 'left' | 'right'; amount: number };

@@ -248,10 +248,21 @@ function setupFighters(leftDef, rightDef) {
   };
 }
 
-function handleAdminAction(action) {
-  console.log(`[Admin] Action: ${action}, current scene: ${gameState.scene}`);
+function handleAdminAction(action, params) {
+  console.log(`[Admin] Action: ${action}, current scene: ${gameState.scene}`, params ? `params: ${JSON.stringify(params)}` : '');
 
   switch (action) {
+    case 'set_game_params': {
+      if (gameState.scene !== 'landing') return;
+      if (params?.balance !== undefined) {
+        gameState.balance = params.balance;
+      }
+      if (params?.round !== undefined) {
+        gameState.round = params.round;
+      }
+      break;
+    }
+
     case 'enter_club': {
       if (gameState.scene !== 'landing') return;
       // Setup tutorial fight: Kacher vs Zheka
@@ -260,7 +271,7 @@ function handleAdminAction(action) {
       setupFighters(kacher, zheka);
       gameState.scene = 'intro';
       gameState.dialogStep = 0;
-      gameState.round = 0;
+      // round уже установлен через set_game_params, если нужно
       break;
     }
 
@@ -497,7 +508,7 @@ io.on('connection', (socket) => {
 
   socket.on('admin_action', (data) => {
     if (socket.id !== gameState.adminSocketId) return;
-    handleAdminAction(data.action);
+    handleAdminAction(data.action, data.params);
     io.emit('state_sync', { state: getPublicState() });
   });
 

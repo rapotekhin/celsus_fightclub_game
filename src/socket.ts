@@ -39,9 +39,9 @@ export function getIsAdmin(): boolean {
 
 // === Emit helpers ===
 
-export function emitAdminAction(action: AdminAction): void {
+export function emitAdminAction(action: AdminAction, params?: { balance?: number; round?: number }): void {
   if (!isAdmin) return;
-  socket.emit('admin_action', { action });
+  socket.emit('admin_action', { action, params });
 }
 
 export function emitTap(x: number, y: number): void {
