@@ -57,36 +57,20 @@ export class PreFightScene implements IScene {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
     ctx.fillRect(0, 0, DESIGN_W, DESIGN_H);
 
-    // Character sheets — large, closer to center
-    const sheetW = 450;
-    const sheetH = 675;
-    const sheetY = 40;
+    // Names and odds at the top (moved up to not block sprites)
     const leftCenterX = DESIGN_W * 0.27;
     const rightCenterX = DESIGN_W * 0.73;
+    const topY = 30; // Top of screen
 
-    const leftSheet = this.assets.images.get(`${left.characterId}_sheet`);
-    if (leftSheet) {
-      const leftX = leftCenterX - sheetW / 2;
-      drawRoundedRect(leftX - 10, sheetY - 10, sheetW + 20, sheetH + 20, 14, 'rgba(255,50,50,0.2)', '#FF4444', 3);
-      ctx.drawImage(leftSheet, leftX, sheetY, sheetW, sheetH);
-    }
-
-    const rightSheet = this.assets.images.get(`${right.characterId}_sheet`);
-    if (rightSheet) {
-      const rightX = rightCenterX - sheetW / 2;
-      drawRoundedRect(rightX - 10, sheetY - 10, sheetW + 20, sheetH + 20, 14, 'rgba(50,50,255,0.2)', '#4488FF', 3);
-      ctx.drawImage(rightSheet, rightX, sheetY, sheetW, sheetH);
-    }
-
-    // Names under sheets
-    drawText(leftDef.name, leftCenterX, sheetY + sheetH + 35, {
+    // Names at top
+    drawText(leftDef.name, leftCenterX, topY, {
       font: '24px PressStart2P',
       color: '#FF4444',
       stroke: true,
       strokeColor: '#000',
       strokeWidth: 4,
     });
-    drawText(rightDef.name, rightCenterX, sheetY + sheetH + 35, {
+    drawText(rightDef.name, rightCenterX, topY, {
       font: '24px PressStart2P',
       color: '#4488FF',
       stroke: true,
@@ -94,24 +78,15 @@ export class PreFightScene implements IScene {
       strokeWidth: 4,
     });
 
-    // VS centered between sheets
-    drawText('VS', DESIGN_W / 2, sheetY + sheetH / 2, {
-      font: '56px PressStart2P',
-      color: '#FFD700',
-      stroke: true,
-      strokeColor: '#000',
-      strokeWidth: 8,
-    });
-
-    // Odds under names
-    drawText(`x${this.state.bet.leftOdds}`, leftCenterX, sheetY + sheetH + 75, {
+    // Odds under names at top
+    drawText(`x${this.state.bet.leftOdds}`, leftCenterX, topY + 40, {
       font: '28px PressStart2P',
       color: '#FF4444',
       stroke: true,
       strokeColor: '#000',
       strokeWidth: 4,
     });
-    drawText(`x${this.state.bet.rightOdds}`, rightCenterX, sheetY + sheetH + 75, {
+    drawText(`x${this.state.bet.rightOdds}`, rightCenterX, topY + 40, {
       font: '28px PressStart2P',
       color: '#4488FF',
       stroke: true,
@@ -119,13 +94,13 @@ export class PreFightScene implements IScene {
       strokeWidth: 4,
     });
 
-    // Bet info (above balance)
+    // Bet info and balance at top center
     if (this.state.bet.playerBet) {
       const betSideText = this.state.bet.playerBet.side === 'left' ? leftDef.name : rightDef.name;
       const betColor = this.state.bet.playerBet.side === 'left' ? '#FF4444' : '#4488FF';
       drawText(
         `Ставка: ${this.state.bet.playerBet.amount.toLocaleString('ru-RU')} ₽ на ${betSideText}`,
-        DESIGN_W / 2, sheetY + sheetH + 130,
+        DESIGN_W / 2, topY + 100,
         {
           font: '18px PressStart2P',
           color: betColor,
@@ -136,13 +111,43 @@ export class PreFightScene implements IScene {
       );
     }
 
-    // Balance
-    drawText(`💰 ${this.state.balance.toLocaleString('ru-RU')} ₽`, DESIGN_W / 2, sheetY + sheetH + 170, {
+    // Balance at top center
+    drawText(`💰 ${this.state.balance.toLocaleString('ru-RU')} ₽`, DESIGN_W / 2, topY + 140, {
       font: '24px PressStart2P',
       color: '#FFD700',
       stroke: true,
       strokeColor: '#000',
       strokeWidth: 4,
+    });
+
+    // Character sheets — moved down to give more space, centered vertically
+    const sheetW = 450;
+    const sheetH = 675;
+    const sheetY = 200; // Moved down to give space for text at top
+    const leftCenterXSheet = DESIGN_W * 0.27;
+    const rightCenterXSheet = DESIGN_W * 0.73;
+
+    const leftSheet = this.assets.images.get(`${left.characterId}_sheet`);
+    if (leftSheet) {
+      const leftX = leftCenterXSheet - sheetW / 2;
+      drawRoundedRect(leftX - 10, sheetY - 10, sheetW + 20, sheetH + 20, 14, 'rgba(255,50,50,0.2)', '#FF4444', 3);
+      ctx.drawImage(leftSheet, leftX, sheetY, sheetW, sheetH);
+    }
+
+    const rightSheet = this.assets.images.get(`${right.characterId}_sheet`);
+    if (rightSheet) {
+      const rightX = rightCenterXSheet - sheetW / 2;
+      drawRoundedRect(rightX - 10, sheetY - 10, sheetW + 20, sheetH + 20, 14, 'rgba(50,50,255,0.2)', '#4488FF', 3);
+      ctx.drawImage(rightSheet, rightX, sheetY, sheetW, sheetH);
+    }
+
+    // VS centered between sheets
+    drawText('VS', DESIGN_W / 2, sheetY + sheetH / 2, {
+      font: '56px PressStart2P',
+      color: '#FFD700',
+      stroke: true,
+      strokeColor: '#000',
+      strokeWidth: 8,
     });
   }
 
