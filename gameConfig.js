@@ -43,7 +43,7 @@ const gameConfig = {
   TAP_BOOST_PER_TAP: 0.1,
 
   /** Максимальное суммарное уменьшение интервала от тапов (0.5 = 50%) */
-  TAP_BOOST_MAX_REDUCTION: 0.1,
+  TAP_BOOST_MAX_REDUCTION: 0.9,
 
   // ═══════════════════════════════════════════════
   // УРОН
