@@ -214,7 +214,7 @@ export class LandingScene implements IScene {
     const panelW = DESIGN_W * 0.4;
     const panelH = DESIGN_H * 0.4;
     const btnX = panelX + panelW * 0.2;
-    const btnY = panelY + panelH - 100; // Match render position
+    const btnY = panelY + panelH + 20; // Match render position (below panel)
     const btnW = 150;
     const btnH = 50;
     return x >= btnX && x <= btnX + btnW && y >= btnY && y <= btnY + btnH;
@@ -226,7 +226,7 @@ export class LandingScene implements IScene {
     const panelW = DESIGN_W * 0.4;
     const panelH = DESIGN_H * 0.4;
     const btnX = panelX + panelW * 0.6;
-    const btnY = panelY + panelH - 100; // Match render position
+    const btnY = panelY + panelH + 20; // Match render position (below panel)
     const btnW = 150;
     const btnH = 50;
     return x >= btnX && x <= btnX + btnW && y >= btnY && y <= btnY + btnH;
@@ -343,11 +343,35 @@ export class LandingScene implements IScene {
         ctx.fillRect(balanceInputX + 100 + textWidth / 2, inputY1 - 15, 2, 20);
       }
       
-      // Apply button (moved down to avoid overlapping input fields)
+      // Hint text (inside panel, above buttons area)
+      drawText('Кликните на поле или Ctrl+1 для выбора', panelX + panelW / 2, panelY + panelH - 80, {
+        font: '12px PressStart2P',
+        color: '#AAA',
+        stroke: true,
+        strokeColor: '#000',
+        strokeWidth: 2,
+      });
+      drawText('Enter - применить, Esc - отмена', panelX + panelW / 2, panelY + panelH - 55, {
+        font: '12px PressStart2P',
+        color: '#AAA',
+        stroke: true,
+        strokeColor: '#000',
+        strokeWidth: 2,
+      });
+    }
+
+    // Buttons below the panel (outside of panel)
+    if (this.showSettings && getIsAdmin()) {
+      const panelX = DESIGN_W * 0.3;
+      const panelY = DESIGN_H * 0.3;
+      const panelW = DESIGN_W * 0.4;
+      const panelH = DESIGN_H * 0.4;
       const btnW = 150;
       const btnH = 50;
+      
+      // Apply button (below panel)
       const applyX = panelX + panelW * 0.2;
-      const applyY = panelY + panelH - 100; // Move buttons to bottom of panel
+      const applyY = panelY + panelH + 20; // 20px below panel
       drawRoundedRect(applyX, applyY, btnW, btnH, 8, '#2a5', '#FFF', 2);
       drawText('Применить', applyX + btnW / 2, applyY + btnH / 2, {
         font: '16px PressStart2P',
@@ -357,29 +381,13 @@ export class LandingScene implements IScene {
         strokeWidth: 2,
       });
       
-      // Cancel button (moved down to avoid overlapping input fields)
+      // Cancel button (below panel)
       const cancelX = panelX + panelW * 0.6;
-      const cancelY = panelY + panelH - 100; // Move buttons to bottom of panel
+      const cancelY = panelY + panelH + 20; // 20px below panel
       drawRoundedRect(cancelX, cancelY, btnW, btnH, 8, '#a22', '#FFF', 2);
       drawText('Отмена', cancelX + btnW / 2, cancelY + btnH / 2, {
         font: '16px PressStart2P',
         color: '#FFF',
-        stroke: true,
-        strokeColor: '#000',
-        strokeWidth: 2,
-      });
-      
-      // Hint text (moved up to avoid overlapping with buttons)
-      drawText('Кликните на поле или Ctrl+1 для выбора', panelX + panelW / 2, panelY + panelH - 150, {
-        font: '12px PressStart2P',
-        color: '#AAA',
-        stroke: true,
-        strokeColor: '#000',
-        strokeWidth: 2,
-      });
-      drawText('Enter - применить, Esc - отмена', panelX + panelW / 2, panelY + panelH - 125, {
-        font: '12px PressStart2P',
-        color: '#AAA',
         stroke: true,
         strokeColor: '#000',
         strokeWidth: 2,
